@@ -6,19 +6,14 @@ import {
   FETCH_ERROR,
   GET_FAVS_FROM_LS,
 } from "./actions";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const initial = {
   favs: [],
-  current: {
-    alpha_two_code: "US",
-    web_pages: ["http://www.marywood.edu"],
-    "state-province": null,
-    name: "Marywood University",
-    domains: ["marywood.edu"],
-    country: "United States",
-  },
+  current: null,
   error: null,
-  loading: true,
+  loading: false,
 
   /*   {
     "alpha_two_code": "US",
@@ -39,24 +34,31 @@ function writeFavsToLocalStorage(state) {
 }
 
 function readFavsFromLocalStorage() {
+  if (!JSON.parse(localStorage.getItem("s10g4"))) return [];
   return JSON.parse(localStorage.getItem("s10g4"));
 }
 
 export function myReducer(state = initial, action) {
   switch (action.type) {
     case FAV_ADD:
+      writeFavsToLocalStorage([...state.favs, action.payload]);
+      let isIncluded = state.favs.every(
+        (fav) => fav.message !== action.payload.message
+      );
       return {
         ...state,
-        favs: action.payload,
+        favs: isIncluded ? [...state.favs, action.payload] : [...state.favs],
       };
 
     case FAV_REMOVE:
+      const newArr = state.favs.filter((e) => e.id !== action.payload);
       return {
         ...state,
-        favs: state.favs.filter((e) => e.id !== action.payload.id),
+        favs: [...newArr],
       };
 
     case FETCH_SUCCESS:
+      toast.success("Yükleme başarılı");
       return {
         ...state,
         current: action.payload,

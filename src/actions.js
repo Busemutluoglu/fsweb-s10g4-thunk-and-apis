@@ -7,10 +7,15 @@ export const FETCH_LOADING = "FETCH_LOADING";
 export const FETCH_ERROR = "FETCH_ERROR";
 
 export const getUniversity = () => (dispatch) => {
+  dispatch({ type: FETCH_LOADING });
+  console.log("here");
   axios
     .get("http://universities.hipolabs.com/search?country=United+States")
     .then((response) =>
-      dispatch({ type: "FETCH_SUCCESS", payload: response.data.slice(0, 5) })
+      dispatch({
+        type: "FETCH_SUCCESS",
+        payload: { ...response.data, id: Date.now() },
+      })
     )
     .catch((error) => dispatch({ type: "FETCH_ERROR", payload: error }));
 };
@@ -25,5 +30,3 @@ export const addFav = (info) => {
 export const removeFav = (id) => {
   return { type: FAV_REMOVE, payload: id };
 };
-
-export const fetchAnother = () => (dispatch) => {};

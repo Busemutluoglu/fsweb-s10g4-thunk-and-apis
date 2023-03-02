@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
 import { Switch, Route, NavLink } from "react-router-dom";
 import Item from "./components/Item";
 import FavItem from "./components/FavItem";
 import { useDispatch, useSelector } from "react-redux";
-import { getUniversity } from "./actions";
+import { getUniversity, getFavsFromLocalStorage } from "./actions";
 
 export default function App() {
-  const loading = false;
-  const current = null;
-  const favs = [];
-
   function addToFavs() {}
-  const dispacth = useDispatch();
-  const store = useSelector((store) => store);
+  const dispatch = useDispatch();
+  const loading = useSelector((store) => store.loading);
+  const current = useSelector((store) => store.current);
+  const favs = useSelector((store) => store.favs);
+
+  useEffect(() => {
+    dispatch(getUniversity());
+    dispatch(getFavsFromLocalStorage());
+  }, []);
 
   return (
     <div className="wrapper max-w-xl mx-auto px-4">
@@ -34,14 +38,14 @@ export default function App() {
 
       <Switch>
         <Route exact path="/">
-          {store.loading && (
+          {loading && (
             <div className="bg-white p-6 text-center shadow-md">YÜKLENİYOR</div>
           )}
-          {store.current && <Item data={store.current} />}
+          {current && <Item data={current} />}
 
           <div className="flex gap-3 justify-end py-3">
             <button
-              onClick={() => dispacth(getUniversity())}
+              onClick={() => dispatch(getUniversity())}
               className="select-none px-4 py-2 border border-blue-700 text-blue-700 hover:border-blue-500 hover:text-blue-500">
               Başka bir tane
             </button>

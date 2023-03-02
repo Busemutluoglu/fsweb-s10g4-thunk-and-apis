@@ -7,7 +7,8 @@ import { BrowserRouter } from "react-router-dom";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import { myReducer } from "./reducers";
-import { Middleware } from "redux";
+import { ToastContainer } from "react-toastify";
+
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 
@@ -18,6 +19,8 @@ root.render(
   <Provider store={depo}>
     <BrowserRouter>
       <>
+        {" "}
+        <ToastContainer />
         <App />
       </>
     </BrowserRouter>
