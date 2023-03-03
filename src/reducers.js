@@ -41,13 +41,9 @@ function readFavsFromLocalStorage() {
 export function myReducer(state = initial, action) {
   switch (action.type) {
     case FAV_ADD:
-      writeFavsToLocalStorage([...state.favs, action.payload]);
-      let isIncluded = state.favs.every(
-        (fav) => fav.message !== action.payload.message
-      );
       return {
         ...state,
-        favs: isIncluded ? [...state.favs, action.payload] : [...state.favs],
+        favs: [...state.favs, state.current],
       };
 
     case FAV_REMOVE:

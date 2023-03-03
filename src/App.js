@@ -4,10 +4,15 @@ import { Switch, Route, NavLink } from "react-router-dom";
 import Item from "./components/Item";
 import FavItem from "./components/FavItem";
 import { useDispatch, useSelector } from "react-redux";
-import { getUniversity, getFavsFromLocalStorage } from "./actions";
+import { getUniversity, getFavsFromLocalStorage, FAV_ADD } from "./actions";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
-  function addToFavs() {}
+  const notify = () => toast("Favorilerin yenilendi!");
+  function addToFavs() {
+    dispatch({ type: FAV_ADD, payload: Date.now() });
+  }
   const dispatch = useDispatch();
   const loading = useSelector((store) => store.loading);
   const current = useSelector((store) => store.current);
@@ -50,7 +55,7 @@ export default function App() {
               Başka bir tane
             </button>
             <button
-              onClick={addToFavs}
+              onClick={(addToFavs, notify)}
               className="select-none px-4 py-2 bg-blue-700 hover:bg-blue-600 text-white">
               Favorilere ekle
             </button>
@@ -61,7 +66,7 @@ export default function App() {
           <div className="flex flex-col gap-3">
             {favs.length > 0 ? (
               favs.map((item) => (
-                <FavItem key={item.key} id={item.key} title={item.activity} />
+                <FavItem key={item.id} id={item.id} title={item.message} />
               ))
             ) : (
               <div className="bg-white p-6 text-center shadow-md">

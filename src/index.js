@@ -19,7 +19,6 @@ root.render(
   <Provider store={depo}>
     <BrowserRouter>
       <>
-        {" "}
         <ToastContainer />
         <App />
       </>

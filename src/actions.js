@@ -10,17 +10,28 @@ export const getUniversity = () => (dispatch) => {
   dispatch({ type: FETCH_LOADING });
   console.log("here");
   axios
-    .get("http://universities.hipolabs.com/search?country=United+States")
+    .get("https://dog.ceo/api/breeds/image/random")
     .then((response) =>
       dispatch({
         type: "FETCH_SUCCESS",
-        payload: { ...response.data, id: Date.now() },
+        payload: response.data,
       })
     )
     .catch((error) => dispatch({ type: "FETCH_ERROR", payload: error }));
 };
+export const getApi = () => {
+  return { type: FETCH_SUCCESS };
+};
+
+export const getError = () => {
+  return { type: FETCH_ERROR };
+};
+
 export const getFavsFromLocalStorage = () => {
   return { type: GET_FAVS_FROM_LS };
+};
+export const getLoading = () => {
+  return { type: FETCH_LOADING };
 };
 
 export const addFav = (info) => {
